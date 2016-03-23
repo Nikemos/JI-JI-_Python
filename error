@@ -1,0 +1,103 @@
+myfile = open('data.txt')
+f = myfile.readlines()
+kek = 1
+ID = 1
+mysales = open('sales.txt')
+s = mysales.readlines()
+while kek == 1:
+    a = int(input('Добро пожаловать в интернет-магазин "НайкProduction"\n   '
+      'Перед Вами меню. Выберите действие:\n1) Продажа товара\n2) Поставка товара\n3) Данные по продаже\n'))
+    if a == 1:
+        for i in f:
+            print(i)
+        b = int(input('Как Вы хотите выбрать товар?\n 1)По id товара\n 2)По названию товара\n'))
+        if b == 1:
+            tovar = input('Через запятую введите id и количество товара, который Вы хотите купить:\n')
+            flag = 0
+            stroka = 0;
+            tovar = tovar.split(',')
+            for i in f:
+                i = i.split(',')
+                if i[0] == tovar[0]:
+                    flag += 1
+                    if int(tovar[1]) <= int(i[3]):
+                        i[3] = str(int(i[3]) - int(tovar[1]))
+                        f[stroka] = i[0] + ',' + i[1] + ',' + i[2] + ',' + i[3] + '\n'
+                        s += str(ID) + ',' + str(int(i[2]) * int(tovar[1])) + '\n'
+                        with open('sales.txt', 'w') as mysales:
+                            for j in s:
+                                mysales.writelines(j)
+                        ID += 1
+                        with open('data.txt', 'w') as myfile:
+                            for j in f:
+                                myfile.writelines(j)
+                    else:
+                        print("Простите, но такого количества товара у нас нет")
+                else:
+                    stroka += 1
+            if flag == 0:
+                print("Вы неправильно ввели id")
+        elif b == 2:
+            stroka = 0
+            tovar = input('Напишите название товара, который Вы хотите купить:\n')
+            flag = 0
+            for i in f:
+                i = i.split(',')
+                if i[1] == tovar:
+                    flag += 1
+                    count = int(input('Сколько хотите купить?\n'))
+                    if count <= int(i[3]):
+                        i[3] = str(int(i[3]) - count)
+                        f[stroka] = i[0] + ',' + i[1] + ',' + i[2] + ',' + i[3] + '\n'
+                        s += str(ID) + ',' + str(int(i[2]) * count) + '\n'
+                        with open('sales.txt', 'w') as mysales:
+                            for j in s:
+                                mysales.writelines(j)
+                        with open('data.txt', 'w') as myfile:
+                            for j in f:
+                                myfile.writelines(j)
+                    else:
+                        print("Простите, но такого количества товара у нас нет")
+                else:
+                    stroka += 1
+            if flag == 0:
+                print("Вы неправильно ввели название товара")
+        kek = int(input('Спасибо, что воспользовались нашим интернет-магазином, хотите продолжить?\n 1)Да;\n2)Нет;\n'))
+    elif a == 2:
+        stroka = 0
+        flag = 0
+        for i in f:
+            print(i)
+        id = input('Введите id товара\n')
+        for i in f:
+            i = i.split(',')
+            if i[0] == id:
+                flag += 1
+                count = int(input('Введите количество товара, которое Вам необходимл:\n'))
+                i[3] = str(int(i[3]) + count)
+                f[stroka] = i[0] + ',' + i[1] + ',' + i[2] + ',' + i[3] + '\n'
+                print('Товар доставлен в магазин')
+                with open('data.txt', 'w') as myfile:
+                    for j in f:
+                        myfile.writelines(j)
+            else:
+                stroka += 1
+        if flag == 0:
+            new = input('Создайте новую учётную запись. Для этого введите название, стоимость и количество товара\n')
+            f += ',' + id + new + '\n'
+            with open('data.txt', 'w') as myfile:
+                for j in f:
+                    myfile.writelines(j)
+        kek = int(input('Спасибо, что воспользовались складом, хотите продолжить?\n 1)Да;\n2)Нет;\n'))
+    elif a == 3:
+        mysales = open('sales.txt')
+        s = mysales.readlines()
+        for j in s:
+            print(j)
+        kek = int(input('Хотите продолжить?\n 1)Да;\n2)Нет;\n'))
+
+
+
+
+
+
